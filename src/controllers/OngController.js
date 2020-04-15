@@ -3,7 +3,7 @@ const connection = require('../database/connection');
 
 module.exports = {
 
-    /** Lista all ONGs
+    /** List all ONGs
      * @param {*} request http request
      * @param {*} response http response 
      */
