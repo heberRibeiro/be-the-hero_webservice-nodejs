@@ -2,12 +2,17 @@ const connection = require('../database/connection');
 
 module.exports = {
 
-    /** List all Incidents
+    /** List all Incidents in a paginated way
      * @param {*} request http request
      * @param {*} response http response 
      */
     async index(request, response) {
-        const incidents = await connection('incidents').select('*');
+        const { page = 1 } = request.query; // find a parameter called "page" (default value = 1)
+
+        const incidents = await connection('incidents')
+        .limit(5)   // limited to 5 results 
+        .offset((page -1) * 5)  // shifting 5 results per page
+        .select('*');
 
         return response.json(incidents);
     },
