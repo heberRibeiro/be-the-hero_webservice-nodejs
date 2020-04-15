@@ -1,17 +1,14 @@
 const express = require('express');
+const crypto = require('crypto');   // encryption package that comes with the node
 
 const routes = express.Router();
 
 routes.post('/users', (request, response) => {
-    const query = request.query;
+    const { name, email, whatsapp, city, uf } = request.body;
 
-    return response.json(query);
-});
+    const id = crypto.randomBytes(4).toString('HEX');   // crypto method that creates random characters
 
-routes.get('/users/:id', (request, response) => {
-     const par = request.params;
-    
-     return response.json(par);
+    return response.json();
 });
 
 module.exports = routes;
