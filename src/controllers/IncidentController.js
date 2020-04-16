@@ -12,9 +12,17 @@ module.exports = {
         const [count] = await connection('incidents').count();
 
         const incidents = await connection('incidents')
-        .limit(5)   // limited to 5 results 
-        .offset((page -1) * 5)  // shifting 5 results per page
-        .select('*');
+        .join('ongs', 'ongs.id', '=', 'incidents.ong_id')   // join with table 'ongs' where 'id' in 'ongs' match with 'ong_id' in 'incidents'
+        .limit(5)                                           // limited to 5 results 
+        .offset((page -1) * 5)                              // shifting 5 results per page
+        .select([
+            'incidents.*',                                  // selects all columns in incident and ong, except for id in ong
+            'ongs.name',
+            'ongs.email',
+            'ongs.whatsapp',
+            'ongs.city',
+            'ongs.uf'
+        ]);
 
         response.header('X-Total-Count', count['count(*)']);
 
