@@ -9,10 +9,14 @@ module.exports = {
     async index(request, response) {
         const { page = 1 } = request.query; // find a parameter called "page" (default value = 1)
 
+        const [count] = await connection('incidents').count();
+
         const incidents = await connection('incidents')
         .limit(5)   // limited to 5 results 
         .offset((page -1) * 5)  // shifting 5 results per page
         .select('*');
+
+        response.header('X-Total-Count', count['count(*)']);
 
         return response.json(incidents);
     },
